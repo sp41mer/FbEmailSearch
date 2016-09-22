@@ -4,7 +4,9 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
+#путь до веб-драйвера хром (TODO: сдеать относительным)
 driver = webdriver.Chrome('/Users/sp41mer/PycharmProjects/FbEmailSearch/chromedriver')
+
 
 emails = [
     'abramova-ie@yandex.ru',
@@ -33,9 +35,11 @@ emails = [
 urls = []
 
 for email in emails:
+    #формирование корректного адреса для урла
     email = email.replace('@','%2540')
     driver.get("https://www.facebook.com/search/str/{}/keywords_users".format(email))
     try:
+        #ждем до тех пор, пока не появится первый тег img
         WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector('img'))
         html = driver.page_source
         soup = BeautifulSoup(html)
